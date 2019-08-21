@@ -8,6 +8,9 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
+        },
+        "@ngxs/schematics:component": {
+          "style": "scss"
         }
       },
       "root": "",
@@ -117,5 +120,8 @@
       }
     }
   },
-  "defaultProject": "shadowtask"
+  "defaultProject": "shadowtask",
+  "cli": {
+    "defaultCollection": "@ngxs/schematics"
+  }
 }
