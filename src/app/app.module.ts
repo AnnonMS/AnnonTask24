@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgxsStoreModule } from '@appstore/store.module';
 import { AppComponent } from './app.component';
+import { PollutionModule } from './pollution/pollution.module';
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import { AppComponent } from './app.component';
   ],
   imports: [
     BrowserModule,
-    NgxsStoreModule
+    NgxsStoreModule,
+    PollutionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
