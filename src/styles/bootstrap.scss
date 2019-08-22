@@ -1,0 +1,22 @@
+@import "variables";
+
+$space: (2 * $gutter);
+$grid-columns: 12;
+$grid-gutter-width: $gutter;
+
+$grid-breakpoints: (
+  xsm: 0,
+  sm: $sm,
+  md: $md,
+  lg: $lg,
+  xl: $xl
+);
+
+$container-max-widths: (
+  sm: $sm - $space,
+  md: $md - $space,
+  lg: $lg - $space,
+  xl: $xl - $space
+);
+
+@import "../../node_modules/bootstrap/scss/bootstrap-grid";
