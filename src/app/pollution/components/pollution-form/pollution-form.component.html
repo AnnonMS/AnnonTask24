@@ -1,0 +1,16 @@
+<form [formGroup]="searchForm" (ngSubmit)="search(searchForm.value)">
+  <div class="form-group">
+    <p *ngIf="error">{{ error }}</p>
+
+    <label for="Country">Country</label>
+    <input list="countries" type="text" id="Country" formControlName="country" class="form-control" aria-label="Country" placeholder="country name" />
+
+    <datalist id="countries">
+      <option *ngFor="let country of allowedCountries" [value]="country.name"></option>
+    </datalist>
+  </div>
+
+  <div class="form-actions">
+    <button [disabled]="!searchForm.valid" type="submit" class="button button--cta">Search</button>
+  </div>
+</form>

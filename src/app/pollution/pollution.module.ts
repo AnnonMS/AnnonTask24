@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PollutionFormComponent } from './components/pollution-form/pollution-form.component';
 import { PollutionContainerComponent } from './pollution-container/pollution-container.component';
 
 @NgModule({
-  declarations: [PollutionContainerComponent],
+  declarations: [PollutionContainerComponent, PollutionFormComponent],
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   exports: [PollutionContainerComponent]
 })
