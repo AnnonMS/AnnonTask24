@@ -10,3 +10,59 @@ body {
   -webkit-font-smoothing: antialiased;
   color: $text-color;
 }
+
+input {
+  font-family: "Raleway", sans-serif;
+  letter-spacing: 0.1rem;
+}
+
+input[type="text"] {
+  display: block;
+  -webkit-appearance: none;
+  box-shadow: none;
+  padding: 15px;
+  width: 100%;
+  text-overflow: ellipsis;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1.6rem;
+
+  &:focus {
+    border-color: #000;
+
+    &::placeholder {
+      color: transparent;
+    }
+  }
+}
+
+::placeholder {
+  color: #666;
+  transition: color 0.3s ease-in-out;
+}
+
+.subtitle {
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 500;
+  color: $subtitle;
+}
+
+.title {
+  font-size: 2.4rem;
+  margin-bottom: 2rem;
+  font-weight: 800;
+  color: $title;
+
+  + .subtitle {
+    margin-top: -2rem;
+  }
+}
+
+label {
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
