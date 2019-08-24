@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { PollutionModule } from './../../pollution.module';
 import { PollutionFormComponent } from './pollution-form.component';
+
 
 describe('PollutionFormComponent', () => {
   let component: PollutionFormComponent;
@@ -8,9 +9,9 @@ describe('PollutionFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PollutionFormComponent ]
+      imports: [PollutionModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

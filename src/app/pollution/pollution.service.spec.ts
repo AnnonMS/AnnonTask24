@@ -14,19 +14,25 @@ describe('PollutionService', () => {
     service = TestBed.get(PollutionService);
   });
 
+  it('should remove slash and pick one city name', () => {
+    const item = 'Valencia/València';
+    const expected = 'Valencia';
+    const result = service.fixCityname(item);
+    expect(expected).toEqual(result);
+  });
 
   it('should be created', () => {
     const mockData: City[] = [
-      { name: 'Kraków', description: '' },
-      { name: 'Połaniec', description: '' },
-      { name: 'Jawor', description: '' },
-      { name: 'Wschowa', description: '' },
-      { name: 'Toruń', description: '' },
-      { name: 'Zgierz', description: '' },
-      { name: 'Szczecin', description: '' },
-      { name: 'Starachowice', description: '' },
-      { name: 'Tarnów', description: '' },
-      { name: 'Przemyśl', description: '' },
+      { title: 'Kraków', description: '', extract: '' },
+      { title: 'Połaniec', description: '', extract: '' },
+      { title: 'Jawor', description: '', extract: '' },
+      { title: 'Wschowa', description: '', extract: '' },
+      { title: 'Toruń', description: '', extract: '' },
+      { title: 'Zgierz', description: '', extract: '' },
+      { title: 'Szczecin', description: '', extract: '' },
+      { title: 'Starachowice', description: '', extract: '' },
+      { title: 'Tarnów', description: '', extract: '' },
+      { title: 'Przemyśl', description: '', extract: '' },
     ];
     expect(service).toBeTruthy();
   });

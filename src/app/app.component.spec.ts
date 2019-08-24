@@ -1,5 +1,7 @@
-import { TestBed, async } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
+import { NgxsStoreModule } from '@appstore/store.module';
 import { AppComponent } from './app.component';
+import { PollutionModule } from './pollution/pollution.module';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -7,6 +9,10 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent
       ],
+      imports: [
+        PollutionModule,
+        NgxsStoreModule
+      ]
     }).compileComponents();
   }));
 
@@ -16,16 +22,4 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'shadowtask'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('shadowtask');
-  });
-
-  it('should render title in a h1 tag', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to shadowtask!');
-  });
 });

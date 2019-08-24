@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgxsStoreModule } from '@appstore/store.module';
+import { PollutionModule } from './../pollution.module';
 import { PollutionContainerComponent } from './pollution-container.component';
+
 
 describe('PollutionContainerComponent', () => {
   let component: PollutionContainerComponent;
@@ -8,9 +10,9 @@ describe('PollutionContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PollutionContainerComponent ]
+      imports: [PollutionModule, NgxsStoreModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
