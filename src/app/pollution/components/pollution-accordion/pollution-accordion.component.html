@@ -1,10 +1,13 @@
 <div class="accordion" role="tablist" aria-multiselectable="true">
   <div class="accordion__item" *ngFor="let city of cities; let i = index" [ngClass]="{ 'accordion__item--active': activeIndex === i }">
     <div #accordionRef class="accordion__header">
-      <button type="button" class="button accordion__button" (click)="toggle(i)">{{ city.name }}</button>
+      <button type="button" class="button accordion__button" (click)="toggle(i)">{{ city.title }}</button>
     </div>
     <div class="accordion__body">
-      <p>{{ city.description }}</p>
+      <div class="p5">
+        <h3>{{ city.description }}</h3>
+        <p>{{ city.extract }}</p>
+      </div>
     </div>
   </div>
 </div>
