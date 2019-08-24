@@ -3,25 +3,6 @@
 @import "typography";
 @import "buttons";
 
-.cities {
-  display: block;
-  padding: 0;
-  margin: 0 0 5rem;
-  list-style-type: none;
-  border: 1px solid #ccc;
-  border-radius: 0.5rem;
-}
-
-.city {
-  display: block;
-  padding: 1rem 2rem;
-  border-bottom: 1rem solid #ccc;
-
-  &:last-of-type {
-    border-bottom: none;
-  }
-}
-
 img {
   display: block;
   max-width: 100%;

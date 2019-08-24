@@ -2,7 +2,7 @@
   overflow: hidden;
   position: relative;
   padding: 10rem 0 20rem;
-  background-image: url("/assets/vectors/separator.svg");
+  background-image: url('/assets/vectors/separator.svg');
   background-repeat: no-repeat;
   background-size: 110%;
   background-position: center bottom -2rem;
@@ -89,4 +89,9 @@ small {
 
 .desc {
   margin: 0;
+}
+
+.cities {
+  margin-top: 2rem;
+  margin-bottom: 5rem;
 }
