@@ -14,8 +14,8 @@ describe('PollutionService', () => {
     service = TestBed.get(PollutionService);
   });
 
-  fit('should have create proper titles string', () => {
 
+  it('should be created', () => {
     const mockData: City[] = [
       { name: 'Kraków', description: '' },
       { name: 'Połaniec', description: '' },
@@ -28,16 +28,6 @@ describe('PollutionService', () => {
       { name: 'Tarnów', description: '' },
       { name: 'Przemyśl', description: '' },
     ];
-
-    const expecting = 'Kraków|Połaniec|Jawor|Wschowa|Toruń|Zgierz|Szczecin|Starachowice|Tarnów|Przemyśl';
-    const result = service.createTitles(mockData);
-
-    expect(result).toEqual(expecting);
-
-  });
-
-
-  it('should be created', () => {
     expect(service).toBeTruthy();
   });
 });

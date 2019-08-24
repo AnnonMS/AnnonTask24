@@ -9,14 +9,12 @@ export interface Country {
 }
 
 export interface Measurements {
-  meta: Meta;
   results: Result[];
 }
 
 export interface Result {
   location: string;
   parameter: string;
-  date: Date;
   value: number;
   unit: string;
   coordinates: Coordinates;
@@ -24,24 +22,36 @@ export interface Result {
   city: string;
 }
 
-interface Coordinates {
+export interface Coordinates {
   latitude: number;
   longitude: number;
 }
 
-interface Date {
-  local: string;
-  utc: string;
+// Wikipedia Response
+
+export interface CityDescWikiResponse {
+  batchcomplete: string;
+  query: Query;
 }
 
-interface Meta {
-  name: string;
-  license: string;
-  website: string;
-  page: number;
-  limit: number;
-  found: number;
+export interface Query {
+  redirects: Redirect[];
+  pages: Pages[];
 }
 
+export interface Pages {
+  [key: string]: Page;
+}
 
-// https://api.openaq.org/v1/measurements?country=PL&parameter=pm25&limit=20&order_by=value&sort=desc
+export interface Page {
+  pageid: number;
+  ns: number;
+  title: string;
+  extract: string;
+  description: string;
+}
+
+interface Redirect {
+  from: string;
+  to: string;
+}
