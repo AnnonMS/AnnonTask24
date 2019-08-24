@@ -98,7 +98,7 @@ export class PollutionState implements NgxsOnInit {
 
     const { countryIso } = payload;
     return this.pollutionSrv.getCities(countryIso).then(
-      (res: City[]) => {
+      (res: string[]) => {
         ctx.dispatch(new FetchCitiesDescription(res));
       });
   }

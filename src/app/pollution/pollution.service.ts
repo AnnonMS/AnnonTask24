@@ -16,14 +16,14 @@ export class PollutionService {
     @param iso: required - to call openaq API and get cities we need ISO Code of the country, we will pass the iso value to other function
   */
 
-  async getCities(iso: string): Promise<City[]> {
-    let items: City[] = [];
+  async getCities(iso: string): Promise<string[]> {
+    let items: string[] = [];
     let page = 1;
 
     // call Api till we have atleast 10 unique cities, wait for Promise to count array length
 
     while (items.length < 10) {
-      const data = await this.getCitiesFromPage(iso, page);
+      const data = await this.getCitiesFromPage(iso, page, items);
       items = [...items, ...data];
       page++;
     };
@@ -36,9 +36,10 @@ export class PollutionService {
   /*
     @param iso: required - to call openaq API and get cities we need ISO Code of the country;
     @param page: required - we use pagination to only request minimal ammount of nodes from API to generate 10 unique cities;
+    @param currentCities: - containing unique cities from previous request, to not duplicate them in this
   */
 
-  getCitiesFromPage(iso: string, page: number): Promise<City[]> {
+  getCitiesFromPage(iso: string, page: number, currentCities: string[]): Promise<string[]> {
     const params = new HttpParams({
       fromObject: {
         country: iso, // Limit results by a certain country, based on iso code.
@@ -53,10 +54,21 @@ export class PollutionService {
 
     return this.http.get<Measurements>(api, { params }).pipe(
       map((res: Measurements) => {
-        const uniqueCities: City[] = res.results
-          .map((result: Result) => result.city) // return only city names from array
-          .filter((city, index, cities) => cities.indexOf(city) === index) // return only unique values
-          .map((name) => ({ name, description: '' })); // create City object and fill with empty desc
+        const uniqueCities: string[] = res.results
+          .map((result: Result) => {
+            let name = result.city.toLowerCase();
+            // fix cities in Spain by removing there prefixes
+            name = name.includes('ccaa', 0) ? name.replace('ccaa ', '') : name;
+            name = name.includes('com.', 0) ? name.replace('com. ', '') : name;
+            name = name.includes('ayto', 0) ? name.replace('ayto ', '') : name;
+            // fix cities in France by removing there prefxises
+            name = name.includes('air', 0) ? name.replace('air ', '') : name;
+            name = name.includes('atmo', 0) ? name.replace('atmo ', '') : name;
+            return name;
+          }) // return only city names from array
+          .filter((city, index, cities) => cities.indexOf(city) === index) // return only unique values from current Api request
+          .filter((ucity) => currentCities.indexOf(ucity) === -1); // return only unique values from all Api request
+
         return uniqueCities;
       }),
     ).toPromise();
@@ -64,12 +76,12 @@ export class PollutionService {
 
 
 
-  async getCityDescriptions(data: City[]): Promise<City[]> {
+  async getCityDescriptions(data: string[]): Promise<City[]> {
 
     let cities: Promise<City>[] = [];
 
-    for (const city of data) {
-      const promise = this.getCityDescription(city.name);
+    for (const name of data) {
+      const promise = this.getCityDescription(name);
       cities = [...cities, promise];
     }
 
@@ -79,7 +91,7 @@ export class PollutionService {
   }
 
 
-  async getCityDescription(name: string) {
+  async getCityDescription(name: string): Promise<City> {
     const params = new HttpParams({
       fromObject: {
         action: 'query', // Fetch data from MediaWik

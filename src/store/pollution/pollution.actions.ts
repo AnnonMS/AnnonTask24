@@ -1,4 +1,3 @@
-import { City } from 'src/app/pollution/pollution';
 
 export class InitFetchCities {
   public static readonly type = '[Pollution] Initial Fetch Cities from api.openaq.org/v1/latest';
@@ -12,7 +11,7 @@ export class FetchCities {
 
 export class FetchCitiesDescription {
   public static readonly type = '[Pollution] Fetch Cities description from en.wikipedia.org/w/api.php';
-  constructor(public payload: City[]) { }
+  constructor(public payload: string[]) { }
 }
 
 export class CheckStorage {
