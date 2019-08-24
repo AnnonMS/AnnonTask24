@@ -1,0 +1,23 @@
+.input {
+  flex-grow: 1;
+  margin: 0;
+
+  &-button {
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0 0 1rem;
+    padding: 0;
+    outline: none;
+    border: 1px solid #ccc;
+  }
+
+  &-wrap {
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: row nowrap;
+  }
+}

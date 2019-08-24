@@ -10,7 +10,12 @@
               <h2 class="title">Air pollution</h2>
               <h3 class="subtitle">Find currently top ten, most polluted cities in the country, based on PM 2.5 parameter.</h3>
               <div *ngIf="!state.fetchingData; else showLoader">
-                <app-pollution-form (searchCountry)="search($event)" [allowedCountries]="state.countries" [defaultValue]="state.lastSearch"></app-pollution-form>
+                <app-pollution-form
+                  (searchCountry)="search($event)"
+                  (clearSearch)="clear()"
+                  [allowedCountries]="state.countries"
+                  [defaultValue]="state.lastSearch"
+                ></app-pollution-form>
               </div>
               <ng-template #showLoader>
                 <div class="loader">

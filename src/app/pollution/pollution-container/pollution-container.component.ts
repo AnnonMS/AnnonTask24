@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PollutionState, PollutionStateModel } from '@appstore/pollution/pollution.state';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { InitFetchCities } from './../../../store/pollution/pollution.actions';
+import { ClearSearchAndStorage, InitFetchCities } from './../../../store/pollution/pollution.actions';
 
 @Component({
   selector: 'app-pollution-container',
@@ -19,6 +19,10 @@ export class PollutionContainerComponent {
 
   triggerAnimation() {
     this.showAccordians = !this.showAccordians;
+  }
+
+  clear() {
+    this.store.dispatch(new ClearSearchAndStorage());
   }
 
   search(country: string) {

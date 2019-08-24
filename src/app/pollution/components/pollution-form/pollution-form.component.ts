@@ -14,6 +14,7 @@ export class PollutionFormComponent implements OnInit {
   @Input() allowedCountries: Country[];
   @Input() defaultValue?: string;
   @Output() searchCountry: EventEmitter<string> = new EventEmitter<string>();
+  @Output() clearSearch: EventEmitter<void> = new EventEmitter<void>();
   searchForm: FormGroup;
   error: string;
 
@@ -21,6 +22,12 @@ export class PollutionFormComponent implements OnInit {
 
   ngOnInit() {
     this.buildForm();
+  }
+
+  clearInput() {
+    this.error = '';
+    this.searchForm.reset();
+    this.clearSearch.emit();
   }
 
   buildForm() {
