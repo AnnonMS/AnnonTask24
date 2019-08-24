@@ -1,1 +1,38 @@
-<p>pollution-container works!</p>
+<div class="app" *ngIf="state$ | async as state">
+  <div class="hero" [ngClass]="{ 'hero--collapse': showAccordians }">
+    <img class="hero__img" src="assets/img/hero.jpg" alt="Air pollution - Photo by Diana Parkhouse on Unsplash" />
+
+    <div class="scene">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6 col-lg-4">
+            <div class="scene__content">
+              <h2 class="title">Air pollution</h2>
+              <h3 class="subtitle">Find currently top ten, most polluted cities in the country, based on PM 2.5 parameter.</h3>
+              <div *ngIf="!state.fetchingData; else showLoader">
+                <app-pollution-form (searchCountry)="search($event)" [allowedCountries]="state.countries" [defaultValue]="state.lastSearch"></app-pollution-form>
+              </div>
+              <ng-template #showLoader>
+                <div class="loader">
+                  <div class="loader-ico"></div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bottom">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-5"><button class="button button--cta button--left" (click)="triggerAnimation()">animate</button></div>
+        <div class="col-md-6 col-lg-7">
+          <div class="cities" *ngIf="state.cities.length">
+            <app-pollution-accordion [cities]="state.cities"></app-pollution-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
