@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MessengerService } from './../messenger/messenger.service';
 import { City, CityDescWikiResponse, Measurements, Result } from './pollution';
 
 @Injectable({
@@ -9,7 +10,7 @@ import { City, CityDescWikiResponse, Measurements, Result } from './pollution';
 })
 export class PollutionService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private messageSrv: MessengerService) { }
 
 
   /*
@@ -20,14 +21,12 @@ export class PollutionService {
     let items: string[] = [];
     let page = 1;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const todayUTC = today.toUTCString();
+    const last24hours = new Date(Date.now() - 86400 * 1000).toUTCString();
 
     // call Api till we have atleast 10 unique cities, wait for Promise to count array length
 
     while (items.length < 10) {
-      const data = await this.getCitiesFromPage(iso, page, todayUTC, items);
+      const data = await this.getCitiesFromPage(iso, page, last24hours, items);
       items = [...items, ...data];
       page++;
     };
@@ -43,7 +42,7 @@ export class PollutionService {
     @param currentCities: - containing unique cities from previous request, to not duplicate them
   */
 
-  getCitiesFromPage(iso: string, page: number, today: string, currentCities: string[]): Promise<string[]> {
+  getCitiesFromPage(iso: string, page: number, last24hours: string, currentCities: string[]): Promise<string[]> {
 
     const params = new HttpParams({
       fromObject: {
@@ -51,10 +50,10 @@ export class PollutionService {
         parameter: 'pm25', // Limit to only a certain parameter (allowed values: pm25, pm10, so2, no2, o3, co, bc)
         order_by: 'value', // order by measurements, parameter value (µg/m3)
         has_geo: 'true', // Filter out items that do not have geographic information
-        limit: '10', // Change the number of results returned (default: 100)
+        limit: '50', // Change the number of results returned (default: 100)
         page: page.toString(), // use Page in case we need to request more records to generate 10 cities
         sort: 'desc', // sort from highest to lowest values
-        date_from: today
+        date_from: last24hours
       }
     });
     const api = `https://api.openaq.org/v1/measurements`;
@@ -92,6 +91,7 @@ export class PollutionService {
 
     const allCities = await Promise.all(cities);
 
+
     return allCities;
   }
 
@@ -110,6 +110,7 @@ export class PollutionService {
       }
     });
     const api = `https://en.wikipedia.org/w/api.php`;
+
 
     return this.http.get<CityDescWikiResponse>(api, { params }).pipe(
       map((res) => {
