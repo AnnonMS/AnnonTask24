@@ -74,6 +74,7 @@ export class PollutionState implements NgxsOnInit {
     ctx.setState(
       produce(ctx.getState(), (draft: PollutionStateModel) => {
         draft.lastSearch = '';
+        draft.cities = [];
         localStorage.removeItem('lastSearch');
       }),
     );
@@ -98,7 +99,6 @@ export class PollutionState implements NgxsOnInit {
     const { countryIso } = payload;
     return this.pollutionSrv.getCities(countryIso).then(
       (res: City[]) => {
-        ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => { draft.cities = res; }));
         ctx.dispatch(new FetchCitiesDescription(res));
       });
   }
