@@ -1,5 +1,6 @@
 export interface City {
-  name: string;
+  title: string;
+  extract: string;
   description: string;
 }
 

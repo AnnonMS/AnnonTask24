@@ -88,29 +88,21 @@ export class PollutionState implements NgxsOnInit {
 
     const countries = ctx.getState().countries;
     const iso = countries.filter((country) => country.name.toLowerCase() === payload.toLowerCase())[0].iso; // find iso code
-    const page = 1;
 
-    ctx.dispatch(new FetchCities({ countryIso: iso, page }));
+    ctx.dispatch(new FetchCities(iso));
   }
 
   @Action(FetchCities)
-  public fetchCities(ctx: StateContext<PollutionStateModel>, { payload }: FetchCities) {
-
-    const { countryIso } = payload;
-    return this.pollutionSrv.getCities(countryIso).then(
-      (res: string[]) => {
-        ctx.dispatch(new FetchCitiesDescription(res));
-      });
+  public async fetchCities(ctx: StateContext<PollutionStateModel>, { payload }: FetchCities) {
+    const cityNames = await this.pollutionSrv.getCities(payload);
+    ctx.dispatch(new FetchCitiesDescription(cityNames));
   }
 
   @Action(FetchCitiesDescription)
-  fetchCitiesDescription(ctx: StateContext<PollutionStateModel>, { payload }: FetchCitiesDescription) {
-    return this.pollutionSrv.getCityDescriptions(payload).then(
-      (res: City[]) => {
-        ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => { draft.cities = res; }));
-        ctx.dispatch(new HideLoader());
-      }
-    );
+  public async fetchCitiesDescription(ctx: StateContext<PollutionStateModel>, { payload }: FetchCitiesDescription) {
+    const cities = await this.pollutionSrv.getCityDescriptions(payload);
+    ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => { draft.cities = cities; }));
+    ctx.dispatch(new HideLoader());
   }
 
 }

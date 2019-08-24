@@ -6,7 +6,7 @@ export class InitFetchCities {
 
 export class FetchCities {
   public static readonly type = '[Pollution] Fetch Citiest';
-  constructor(public payload: { countryIso: string, page: number }) { }
+  constructor(public payload: string) { }
 }
 
 export class FetchCitiesDescription {

@@ -13,17 +13,21 @@ export class PollutionService {
 
 
   /*
-    @param iso: required - to call openaq API and get cities we need ISO Code of the country, we will pass the iso value to other function
+    @param iso: required - to call openaq API and get cities we need ISO Code of the country
   */
 
   async getCities(iso: string): Promise<string[]> {
     let items: string[] = [];
     let page = 1;
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const todayUTC = today.toUTCString();
+
     // call Api till we have atleast 10 unique cities, wait for Promise to count array length
 
     while (items.length < 10) {
-      const data = await this.getCitiesFromPage(iso, page, items);
+      const data = await this.getCitiesFromPage(iso, page, todayUTC, items);
       items = [...items, ...data];
       page++;
     };
@@ -36,36 +40,29 @@ export class PollutionService {
   /*
     @param iso: required - to call openaq API and get cities we need ISO Code of the country;
     @param page: required - we use pagination to only request minimal ammount of nodes from API to generate 10 unique cities;
-    @param currentCities: - containing unique cities from previous request, to not duplicate them in this
+    @param currentCities: - containing unique cities from previous request, to not duplicate them
   */
 
-  getCitiesFromPage(iso: string, page: number, currentCities: string[]): Promise<string[]> {
+  getCitiesFromPage(iso: string, page: number, today: string, currentCities: string[]): Promise<string[]> {
+
     const params = new HttpParams({
       fromObject: {
         country: iso, // Limit results by a certain country, based on iso code.
         parameter: 'pm25', // Limit to only a certain parameter (allowed values: pm25, pm10, so2, no2, o3, co, bc)
-        order_by: 'measurements[0].value', // order by measurements, parameter value (µg/m3)
+        order_by: 'value', // order by measurements, parameter value (µg/m3)
+        has_geo: 'true', // Filter out items that do not have geographic information
         limit: '10', // Change the number of results returned (default: 100)
         page: page.toString(), // use Page in case we need to request more records to generate 10 cities
         sort: 'desc', // sort from highest to lowest values
+        date_from: today
       }
     });
-    const api = `https://api.openaq.org/v1/latest`;
+    const api = `https://api.openaq.org/v1/measurements`;
 
     return this.http.get<Measurements>(api, { params }).pipe(
       map((res: Measurements) => {
         const uniqueCities: string[] = res.results
-          .map((result: Result) => {
-            let name = result.city.toLowerCase();
-            // fix cities in Spain by removing there prefixes
-            name = name.includes('ccaa', 0) ? name.replace('ccaa ', '') : name;
-            name = name.includes('com.', 0) ? name.replace('com. ', '') : name;
-            name = name.includes('ayto', 0) ? name.replace('ayto ', '') : name;
-            // fix cities in France by removing there prefxises
-            name = name.includes('air', 0) ? name.replace('air ', '') : name;
-            name = name.includes('atmo', 0) ? name.replace('atmo ', '') : name;
-            return name;
-          }) // return only city names from array
+          .map((result: Result) => this.fixCityname(result.city)) // return only city names from array and pass it throught city names fix function
           .filter((city, index, cities) => cities.indexOf(city) === index) // return only unique values from current Api request
           .filter((ucity) => currentCities.indexOf(ucity) === -1); // return only unique values from all Api request
 
@@ -74,6 +71,14 @@ export class PollutionService {
     ).toPromise();
   }
 
+
+  fixCityname(name: string) {
+    name.toLowerCase();
+    // get only 1 city name from api res in case format' Valencia/València' apear;
+    name = name.includes('/', 0) ? name.substr(0, name.indexOf('/')) : name;
+
+    return name;
+  }
 
 
   async getCityDescriptions(data: string[]): Promise<City[]> {
@@ -112,14 +117,19 @@ export class PollutionService {
         const pages = res.query.pages;
         const pageid = Object.keys(pages)[0];
 
-        const { extract, title } = pages[pageid];
-        const description = extract ? extract : 'Description not found';
-        const city: City = { description, name: title };
+        const { extract, title, description } = pages[pageid];
+        const city: City = {
+          description,
+          extract: extract ? extract : 'Description not found',
+          title
+        };
 
         return city;
       })
     ).toPromise();
   }
+
+
 
 
   private handleError<T>(message: string, result?: T) {
