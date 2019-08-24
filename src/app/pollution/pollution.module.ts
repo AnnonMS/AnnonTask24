@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MessengerModule } from './../messenger/messenger.module';
+import { PollutionAccordionComponent } from './components/pollution-accordion/pollution-accordion.component';
 import { PollutionFormComponent } from './components/pollution-form/pollution-form.component';
 import { PollutionContainerComponent } from './pollution-container/pollution-container.component';
-import { PollutionAccordionComponent } from './components/pollution-accordion/pollution-accordion.component';
 
 @NgModule({
   declarations: [PollutionContainerComponent, PollutionFormComponent, PollutionAccordionComponent],
@@ -13,6 +14,7 @@ import { PollutionAccordionComponent } from './components/pollution-accordion/po
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MessengerModule,
   ],
   exports: [PollutionContainerComponent]
 })

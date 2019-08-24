@@ -7,7 +7,7 @@
           <div class="scene">
             <div class="scene__content">
               <h2 class="title">Air pollution</h2>
-              <h3 class="subtitle">Find top ten, <strong>today</strong> - most polluted cities in the country, based on PM 2.5 parameter.</h3>
+              <h3 class="subtitle">Find top ten, most polluted cities in the country in <strong>last 24 hours</strong>, based on PM 2.5 parameter.</h3>
               <div *ngIf="!state.fetchingData; else showLoader">
                 <app-pollution-form
                   (searchCountry)="search($event)"
@@ -31,6 +31,7 @@
     <div class="page__top"></div>
     <div class="page__content">
       <div class="container">
+        <app-messenger-container></app-messenger-container>
         <div class="cities" *ngIf="state.cities.length">
           <app-pollution-accordion [cities]="state.cities"></app-pollution-accordion>
         </div>
