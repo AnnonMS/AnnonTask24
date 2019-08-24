@@ -1,19 +1,18 @@
+:host {
+  display: block;
+  height: 100%;
+  overflow: hidden;
+}
+
 .hero {
   overflow: hidden;
   position: relative;
   padding: 10rem 0 20rem;
-  background-image: url('/assets/vectors/separator.svg');
-  background-repeat: no-repeat;
-  background-size: 110%;
-  background-position: center bottom -2rem;
-  height: 600px;
-  transition: height 0.3s ease-in-out;
 
-  &--collapse {
+  .app--accordion & {
     height: 200px;
     padding: 0;
     overflow: hidden;
-    transition: height 0.3s ease-in-out 0.3s;
   }
 
   &__img {
@@ -28,7 +27,31 @@
   }
 }
 
+.page {
+  position: relative;
+  margin-top: 60rem;
+  z-index: 2;
+
+  &__content {
+    background-color: #fff;
+    padding: 5rem 0;
+  }
+
+  &__top {
+    background-image: url('/assets/vectors/separator.svg');
+    background-repeat: no-repeat;
+    background-size: 110%;
+    background-position: center top;
+    transition: height 0.3s ease-in-out;
+    height: 100px;
+    filter: drop-shadow(2px -2px rgba(0,0,0,0.2));
+  }
+}
+
 .scene {
+  position: relative;
+  transition: transform 0.3s ease-in-out;
+  z-index: 10;
 
   &__content {
     // box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
@@ -89,9 +112,4 @@ small {
 
 .desc {
   margin: 0;
-}
-
-.cities {
-  margin-top: 2rem;
-  margin-bottom: 5rem;
 }

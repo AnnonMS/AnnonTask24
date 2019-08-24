@@ -1,7 +1,9 @@
-@import "reset";
-@import "variables";
-@import "typography";
-@import "buttons";
+@import 'reset';
+@import 'variables';
+@import 'typography';
+@import 'buttons';
+@import 'atomic';
+@import 'parallax';
 
 img {
   display: block;
