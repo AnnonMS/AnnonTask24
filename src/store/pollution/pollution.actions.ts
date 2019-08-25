@@ -1,12 +1,13 @@
+import { SearchParams } from 'src/app/pollution/pollution';
 
 export class InitFetchCities {
   public static readonly type = '[Pollution] Initial Fetch Cities from api.openaq.org/v1/latest';
-  constructor(public payload: string) { }
+  constructor(public payload: SearchParams) { }
 }
 
 export class FetchCities {
   public static readonly type = '[Pollution] Fetch Citiest';
-  constructor(public payload: string) { }
+  constructor(public payload: SearchParams) { }
 }
 
 export class FetchCitiesDescription {
@@ -24,7 +25,7 @@ export class ClearSearchAndStorage {
 
 export class SaveToStorage {
   public static readonly type = '[Pollution] Save last search to Local storage';
-  constructor(public payload: string) { }
+  constructor(public payload: SearchParams) { }
 }
 
 export class ShowLoader {

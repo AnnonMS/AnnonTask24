@@ -15,9 +15,44 @@
     border: 1px solid #ccc;
   }
 
-  &-wrap {
+  &-group {
     margin-top: 1rem;
     display: flex;
-    flex-flow: row nowrap;
+    margin-bottom: 2rem;
+
+    &--wrap {
+      flex-flow: row wrap;
+    }
+
+    &--nowrap {
+      flex-flow: row nowrap;
+      width: 100%;
+    }
   }
+}
+
+.form {
+
+  &-actions {
+    display: flex;
+    flex-flow: nowrap;
+    margin: 0;
+  }
+
+  &-info {
+    flex-grow: 1;
+    padding: 0;
+    margin-right: 2rem;
+
+    p {
+      padding-top: 1rem;
+      font-size: 1.6rem;
+      line-height: 1.2;
+      margin: 0;
+    }
+  }
+}
+
+.form-check {
+  padding-right: 4rem;
 }

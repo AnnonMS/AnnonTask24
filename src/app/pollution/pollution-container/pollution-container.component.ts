@@ -25,8 +25,8 @@ export class PollutionContainerComponent {
     this.store.dispatch(new ClearSearchAndStorage());
   }
 
-  search(country: string) {
-    this.store.dispatch(new InitFetchCities(country));
+  search(data: { country: string, param: string }) {
+    this.store.dispatch(new InitFetchCities(data));
   }
 
 }

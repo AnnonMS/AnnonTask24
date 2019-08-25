@@ -9,6 +9,16 @@ export interface Country {
   iso: string;
 }
 
+export interface Parameter {
+  name: string;
+  value: string;
+}
+
+export interface SearchParams {
+  country: string;
+  param: string;
+}
+
 export interface Measurements {
   results: Result[];
 }

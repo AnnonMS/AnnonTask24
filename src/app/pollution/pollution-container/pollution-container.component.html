@@ -7,12 +7,13 @@
           <div class="scene">
             <div class="scene__content">
               <h2 class="title">Air pollution</h2>
-              <h3 class="subtitle">Find top ten, most polluted cities in the country in <strong>last 24 hours</strong>, based on PM 2.5 parameter.</h3>
+              <h3 class="subtitle">Find top ten, most polluted cities in the country in <strong>last 24 hours</strong>, based on selected parameter.</h3>
               <div *ngIf="!state.fetchingData; else showLoader">
                 <app-pollution-form
                   (searchCountry)="search($event)"
                   (clearSearch)="clear()"
                   [allowedCountries]="state.countries"
+                  [allowedParameters]="state.parameters"
                   [defaultValue]="state.lastSearch"
                 ></app-pollution-form>
               </div>

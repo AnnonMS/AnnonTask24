@@ -1,24 +1,33 @@
 import { Action, NgxsOnInit, Selector, State, StateContext } from '@ngxs/store';
 import { produce } from 'immer';
-import { City, Country } from 'src/app/pollution/pollution';
+import { City, Country, Parameter, SearchParams } from 'src/app/pollution/pollution';
 import { PollutionService } from 'src/app/pollution/pollution.service';
 import { CheckStorage, ClearSearchAndStorage, FetchCities, FetchCitiesDescription, HideLoader, InitFetchCities, SaveToStorage, ShowLoader } from './pollution.actions';
 export interface PollutionStateModel {
-  lastSearch: string;
+  lastSearch: SearchParams;
   countries: Country[];
   cities: City[];
+  parameters: Parameter[];
   fetchingData: boolean;
 }
 
 @State<PollutionStateModel>({
   name: 'pollution',
   defaults: {
-    lastSearch: '',
+    lastSearch: {
+      country: '',
+      param: 'pm25'
+    },
     countries: [
       { name: 'Poland', iso: 'PL' },
       { name: 'Germany', iso: 'DE' },
       { name: 'Spain', iso: 'ES' },
       { name: 'France', iso: 'FR' }
+    ],
+    parameters: [
+      { name: 'pm2.5', value: 'pm25' },
+      { name: 'pm10', value: 'pm10' },
+      { name: 'Ozone', value: 'o3' }
     ],
     cities: [],
     fetchingData: false
@@ -46,7 +55,12 @@ export class PollutionState implements NgxsOnInit {
 
   @Action(CheckStorage)
   checkStorage(ctx: StateContext<PollutionStateModel>) {
-    ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => { draft.lastSearch = localStorage.getItem('lastSearch'); }));
+    ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => {
+      draft.lastSearch = {
+        country: localStorage.getItem('lastSearchCountry'),
+        param: localStorage.getItem('lastSearchParam') ? localStorage.getItem('lastSearchParam') : 'pm25',
+      };
+    }));
   }
 
   @Action(ShowLoader)
@@ -63,8 +77,12 @@ export class PollutionState implements NgxsOnInit {
   saveToStorage(ctx: StateContext<PollutionStateModel>, { payload }: SaveToStorage) {
     ctx.setState(
       produce(ctx.getState(), (draft: PollutionStateModel) => {
-        draft.lastSearch = payload;
-        localStorage.setItem('lastSearch', payload);
+        draft.lastSearch = {
+          country: payload.country,
+          param: payload.param
+        };
+        localStorage.setItem('lastSearchCountry', payload.country);
+        localStorage.setItem('lastSearchParam', payload.param);
       }),
     );
   }
@@ -73,9 +91,10 @@ export class PollutionState implements NgxsOnInit {
   clearSearchAndStorage(ctx: StateContext<PollutionStateModel>) {
     ctx.setState(
       produce(ctx.getState(), (draft: PollutionStateModel) => {
-        draft.lastSearch = '';
+        draft.lastSearch = { country: '', param: 'pm25' };
         draft.cities = [];
-        localStorage.removeItem('lastSearch');
+        localStorage.removeItem('lastSearchCountry');
+        localStorage.removeItem('lastSearchParam');
       }),
     );
   }
@@ -87,9 +106,10 @@ export class PollutionState implements NgxsOnInit {
     ctx.dispatch(new SaveToStorage(payload));
 
     const countries = ctx.getState().countries;
-    const iso = countries.filter((country) => country.name.toLowerCase() === payload.toLowerCase())[0].iso; // find iso code
+    const iso = countries.filter((country) => country.name.toLowerCase() === payload.country.toLowerCase())[0].iso; // find iso code
 
-    ctx.dispatch(new FetchCities(iso));
+    console.dir(payload);
+    ctx.dispatch(new FetchCities({ country: iso, param: payload.param }));
   }
 
   @Action(FetchCities)

@@ -1,21 +1,34 @@
 <form [formGroup]="searchForm" (ngSubmit)="search(searchForm.value)">
-    <p *ngIf="error">{{ error }}</p>
+  <label>Parameter</label>
 
-    <label for="Country">Country</label>
-
-    <div class="input-wrap">
-      <input class="input input--text" list="countries" type="text" id="Country" formControlName="country" aria-label="Country" placeholder="country name" />
-
-      <button (click)="clearInput()" class="input-button button button--close" type="button" aria-label="Clear Input">
-        <svg role="presentation" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/><path d="M0 0h24v24H0z" fill="none"/></svg>
-      </button>
+  <div class="input-group input-group--wrap">
+    <div class="form-check" *ngFor="let item of allowedParameters">
+      <input formControlName="parameter" type="radio" class="input-check" name="parameter" [id]="item.value" [value]="item.value" />
+      <label [for]="item.value">{{ item.name }}</label>
     </div>
+  </div>
 
-    <datalist id="countries">
-      <option *ngFor="let country of allowedCountries" [value]="country.name"></option>
-    </datalist>
+  <label for="Country">Country</label>
+
+  <div class="input-group input-group--nowrap">
+    <input class="input input--text" list="countries" type="text" id="Country" formControlName="country" aria-label="Country" placeholder="country name" />
+
+    <button (click)="clearInput()" class="input-button button button--close" type="button" aria-label="Clear Input">
+      <svg role="presentation" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+        <path d="M0 0h24v24H0z" fill="none" />
+      </svg>
+    </button>
+  </div>
+
+  <datalist id="countries">
+    <option *ngFor="let country of allowedCountries" [value]="country.name"></option>
+  </datalist>
 
   <div class="form-actions">
+    <div class="form-info">
+      <p *ngIf="error">{{ error }}</p>
+    </div>
     <button [disabled]="!searchForm.valid" type="submit" class="button button--cta">Search</button>
   </div>
 </form>
