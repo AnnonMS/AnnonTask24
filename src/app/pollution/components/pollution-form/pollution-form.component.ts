@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { Country, Parameter, SearchParams } from 'src/app/pollution/pollution';
 import { inArrayValidator } from 'src/app/shared/validators/input-in-array/input-in-array.directive';
 
@@ -46,11 +46,11 @@ export class PollutionFormComponent implements OnInit {
     });
   }
 
-  search(form: any) {
+  search(form: NgForm) {
 
     const search: SearchParams = {
-      country: form.country,
-      param: form.parameter
+      country: form.value.country,
+      param: form.value.parameter
     };
 
     if (form.valid) {

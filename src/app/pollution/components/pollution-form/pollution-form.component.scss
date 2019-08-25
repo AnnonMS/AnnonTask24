@@ -19,14 +19,15 @@
     margin-top: 1rem;
     display: flex;
     margin-bottom: 2rem;
+    width: 100%;
+    flex-direction: row;
 
     &--wrap {
-      flex-flow: row wrap;
+      flex-wrap: wrap;
     }
 
     &--nowrap {
-      flex-flow: row nowrap;
-      width: 100%;
+      flex-wrap: nowrap;
     }
   }
 }
