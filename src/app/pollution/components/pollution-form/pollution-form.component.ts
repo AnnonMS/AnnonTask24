@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Country, Parameter, SearchParams } from 'src/app/pollution/pollution';
+import { inArrayValidator } from 'src/app/shared/validators/input-in-array/input-in-array.directive';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class PollutionFormComponent implements OnInit {
 
   @Input() allowedCountries: Country[];
   @Input() allowedParameters: Parameter[];
-  @Input() defaultValue?: SearchParams;
+  @Input() defaultValue: SearchParams;
   @Output() searchCountry: EventEmitter<SearchParams> = new EventEmitter<SearchParams>();
   @Output() clearSearch: EventEmitter<void> = new EventEmitter<void>();
   searchForm: FormGroup;
@@ -26,7 +27,6 @@ export class PollutionFormComponent implements OnInit {
   }
 
   clearInput() {
-    this.error = '';
     this.searchForm.reset({
       parameter: 'pm25'
     });
@@ -35,22 +35,26 @@ export class PollutionFormComponent implements OnInit {
 
   buildForm() {
 
-    console.dir(this.defaultValue.param);
+    const allowedCountiesNames = this.allowedCountries.map((value) => value.name);
 
     this.searchForm = this.fb.group({
-      country: [this.defaultValue.country, Validators.required],
+      country: [this.defaultValue.country, [
+        Validators.required,
+        inArrayValidator(allowedCountiesNames),
+      ]],
       parameter: [this.defaultValue.param, Validators.required]
     });
   }
 
   search(form: any) {
-    const country: string = form.country;
-    const param = form.parameter;
-    const validate = this.allowedCountries.map((value) => value.name.toLowerCase()).includes(country.toLowerCase());
-    if (validate) {
-      this.searchCountry.emit({ country, param });
-    } else {
-      this.error = `Invalid country, please choose one from: poland, spain, france or germany`;
+
+    const search: SearchParams = {
+      country: form.country,
+      param: form.parameter
+    };
+
+    if (form.valid) {
+      this.searchCountry.emit(search);
     }
   }
 

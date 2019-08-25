@@ -8,10 +8,23 @@
     </div>
   </div>
 
-  <label for="Country">Country</label>
+  <label for="country">Country</label>
 
   <div class="input-group input-group--nowrap">
-    <input class="input input--text" list="countries" type="text" id="Country" formControlName="country" aria-label="Country" placeholder="country name" />
+    <input
+      class="input input--text"
+      list="countries"
+      type="text"
+      id="country"
+      name="country"
+      formControlName="country"
+      aria-label="Country"
+      placeholder="country name"
+    />
+
+    <datalist id="countries">
+      <option *ngFor="let countryItem of allowedCountries" [value]="countryItem.name"></option>
+    </datalist>
 
     <button (click)="clearInput()" class="input-button button button--close" type="button" aria-label="Clear Input">
       <svg role="presentation" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -21,14 +34,7 @@
     </button>
   </div>
 
-  <datalist id="countries">
-    <option *ngFor="let country of allowedCountries" [value]="country.name"></option>
-  </datalist>
-
   <div class="form-actions">
-    <div class="form-info">
-      <p *ngIf="error">{{ error }}</p>
-    </div>
     <button [disabled]="!searchForm.valid" type="submit" class="button button--cta">Search</button>
   </div>
 </form>

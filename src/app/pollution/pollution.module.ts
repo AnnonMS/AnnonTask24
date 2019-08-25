@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 import { MessengerModule } from './../messenger/messenger.module';
 import { PollutionAccordionComponent } from './components/pollution-accordion/pollution-accordion.component';
 import { PollutionFormComponent } from './components/pollution-form/pollution-form.component';
@@ -15,6 +16,7 @@ import { PollutionContainerComponent } from './pollution-container/pollution-con
     ReactiveFormsModule,
     HttpClientModule,
     MessengerModule,
+    SharedModule,
   ],
   exports: [PollutionContainerComponent]
 })
