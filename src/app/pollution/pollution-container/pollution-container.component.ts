@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
+import { ClearSearchAndStorage, InitFetchCities } from '@appstore/pollution/pollution.actions';
 import { PollutionState, PollutionStateModel } from '@appstore/pollution/pollution.state';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { ClearSearchAndStorage, InitFetchCities } from './../../../store/pollution/pollution.actions';
+import { SearchParams } from 'src/app/pollution/pollution';
 
 @Component({
   selector: 'app-pollution-container',
@@ -13,19 +14,13 @@ export class PollutionContainerComponent {
 
   @Select(PollutionState.getState) public state$: Observable<PollutionStateModel>;
 
-  showAccordians = false;
-
   constructor(public store: Store) { }
-
-  triggerAnimation() {
-    this.showAccordians = !this.showAccordians;
-  }
 
   clear() {
     this.store.dispatch(new ClearSearchAndStorage());
   }
 
-  search(data: { country: string, param: string }) {
+  search(data: SearchParams) {
     this.store.dispatch(new InitFetchCities(data));
   }
 
