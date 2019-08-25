@@ -9,12 +9,6 @@
   position: relative;
   padding: 5rem 0 5rem;
 
-  .app--accordion & {
-    height: 200px;
-    padding: 0;
-    overflow: hidden;
-  }
-
   &__img {
     position: absolute;
     top: 0;
@@ -29,41 +23,57 @@
 
 .page {
   position: relative;
-  margin-top: 60rem;
-  z-index: 2;
+  background-color: #fff;
+  min-height: 20rem;
+  padding: 5rem 0;
 
-  &__content {
-    background-color: #fff;
-    padding: 5rem 0;
+  @media screen and (min-width: 1024px) {
+    margin-top: 60rem;
   }
 
-  &__top {
+  &::before {
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    content: '';
     background-image: url('/assets/vectors/separator.svg');
     background-repeat: no-repeat;
-    background-size: 110%;
+    background-size: cover;
     background-position: center top;
-    transition: height 0.3s ease-in-out;
-    height: 100px;
-    filter: drop-shadow(2px -2px rgba(0, 0, 0, 0.2));
+    height: 150px;
+    display: block;
   }
 }
 
 .scene {
   position: relative;
-  transition: transform 0.3s ease-in-out;
   z-index: 10;
+  padding-top: 10rem;
+  margin-bottom: 10rem;
+
+  @media screen and (min-width: 1024px) {
+    padding-top: 15rem;
+    position: sticky;
+    top: 0;
+    height: 56rem;
+    margin-bottom: -56rem;
+    pointer-events: none;
+  }
 
   &__content {
-    // box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    // box-shadow: 0 2px 26px 5px rgb(150, 83, 31, 0.5);
 
     pointer-events: initial;
     border-radius: 0.5rem;
     min-height: 49rem;
     background-color: #fff;
-    padding: 4rem;
-    box-shadow: 0 2px 26px 5px rgb(150, 83, 31, 0.5);
-    font-size: 18px;
-    opacity: 1;
+    padding: 3rem;
+
+    @media screen and (min-width: 768px) {
+      padding: 4rem;
+    }
   }
 }
 

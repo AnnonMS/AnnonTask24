@@ -1,4 +1,4 @@
-@import "variables";
+@import 'variables';
 
 $space: (2 * $gutter);
 $grid-columns: 12;
@@ -19,4 +19,4 @@ $container-max-widths: (
   xl: $xl - $space
 );
 
-@import "../../node_modules/bootstrap/scss/bootstrap-grid";
+@import '../../node_modules/bootstrap/scss/bootstrap-grid';

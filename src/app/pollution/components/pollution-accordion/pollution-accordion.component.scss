@@ -12,7 +12,6 @@
       border-bottom: none;
     }
 
-    &:first-of-type,
     &--active {
       height: auto;
     }
@@ -29,8 +28,9 @@
     outline: none;
     margin: 0;
 
-    &:focus {
-      background-color: #f5f5f5;
+    &:focus,
+    .accordion__item--active & {
+      background-color: #e5e5e5;
     }
   }
 

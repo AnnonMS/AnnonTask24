@@ -69,8 +69,13 @@ body {
   transform: translateZ(-1.1px) scale(2.1);
   transform-style: preserve-3d;
   transform-origin: 0% 0% 0px;
-  height: 60rem;
-  margin-bottom: -65rem;
+  height: 100vh;
+  margin-bottom: -100vh;
+
+  @include breakpoint($md) {
+    height: 60rem;
+    margin-bottom: -65rem;
+  }
 }
 
 .fake-height {

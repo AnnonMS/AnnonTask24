@@ -1,40 +1,41 @@
-<div class="app" *ngIf="state$ | async as state" [ngClass]="{ 'app--accordion': showAccordians }">
+<div class="app" *ngIf="state$ | async as state">
   <div class="hero">
     <img class="hero__img" src="assets/img/hero.jpg" alt="Air pollution - Photo by Diana Parkhouse on Unsplash" />
+  </div>
+  <div class="scene">
     <div class="container">
       <div class="row">
-        <div class="col-md-6 col-lg-4">
-          <div class="scene">
-            <div class="scene__content">
-              <h2 class="title">Air pollution</h2>
-              <h3 class="subtitle">Find top ten, most polluted cities in the country in <strong>last 24 hours</strong>, based on selected parameter.</h3>
-              <div *ngIf="!state.fetchingData; else showLoader">
-                <app-pollution-form
-                  (searchCountry)="search($event)"
-                  (clearSearch)="clear()"
-                  [allowedCountries]="state.countries"
-                  [allowedParameters]="state.parameters"
-                  [defaultValue]="state.lastSearch"
-                ></app-pollution-form>
-              </div>
-              <ng-template #showLoader>
-                <div class="loader">
-                  <div class="loader-ico"></div>
-                </div>
-              </ng-template>
+        <div class="col-md-6 col-lg-5 col-xl-4">
+          <div class="scene__content">
+            <h2 class="title">Air pollution</h2>
+            <h3 class="subtitle">Find top ten, most polluted cities in the country in <strong>last 24 hours</strong>, based on selected parameter.</h3>
+            <div *ngIf="!state.fetchingData; else showLoader">
+              <app-pollution-form
+                (searchCountry)="search($event)"
+                (clearSearch)="clear()"
+                [allowedCountries]="state.countries"
+                [allowedParameters]="state.parameters"
+                [defaultValue]="state.lastSearch"
+              ></app-pollution-form>
             </div>
+            <ng-template #showLoader>
+              <div class="loader">
+                <div class="loader-ico"></div>
+              </div>
+            </ng-template>
           </div>
         </div>
       </div>
     </div>
   </div>
   <div class="page">
-    <div class="page__top"></div>
-    <div class="page__content">
-      <div class="container">
-        <app-messenger-container></app-messenger-container>
-        <div class="cities" *ngIf="state.cities.length">
-          <app-pollution-accordion [cities]="state.cities"></app-pollution-accordion>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 col-lg-7 offset-md-6 offset-xl-5">
+          <app-messenger-container></app-messenger-container>
+          <div class="cities" *ngIf="state.cities.length">
+            <app-pollution-accordion [cities]="state.cities"></app-pollution-accordion>
+          </div>
         </div>
       </div>
     </div>
