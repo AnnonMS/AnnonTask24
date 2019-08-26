@@ -1,7 +1,7 @@
 <form [formGroup]="searchForm" (ngSubmit)="search(searchForm)">
   <label>Parameter</label>
 
-  <div class="input-group input-group--wrap">
+  <div class="input__group input__group--wrap">
     <div class="form-check" *ngFor="let item of allowedParameters">
       <input formControlName="parameter" type="radio" class="input-check" name="parameter" [id]="item.value" [value]="item.value" />
       <label [for]="item.value">{{ item.name }}</label>
@@ -10,7 +10,7 @@
 
   <label for="country">Country</label>
 
-  <div class="input-group input-group--nowrap">
+  <div class="input__group input__group--nowrap">
     <input
       class="input input--text"
       list="countries"
@@ -26,7 +26,7 @@
       <option *ngFor="let countryItem of allowedCountries" [value]="countryItem.name"></option>
     </datalist>
 
-    <button (click)="clearInput()" class="input-button button button--close" type="button" aria-label="Clear Input">
+    <button (click)="clearInput()" class="input__button button" type="button" aria-label="Clear Input">
       <svg role="presentation" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
         <path d="M0 0h24v24H0z" fill="none" />
