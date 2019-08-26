@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ClearMessages } from '@appstore/messenger/messenger.actions';
 import { ClearSearchAndStorage, InitFetchCities } from '@appstore/pollution/pollution.actions';
 import { PollutionState, PollutionStateModel } from '@appstore/pollution/pollution.state';
 import { Select, Store } from '@ngxs/store';
@@ -17,10 +18,12 @@ export class PollutionContainerComponent {
   constructor(public store: Store) { }
 
   clear() {
+    this.store.dispatch(new ClearMessages());
     this.store.dispatch(new ClearSearchAndStorage());
   }
 
   search(data: SearchParams) {
+    this.store.dispatch(new ClearMessages());
     this.store.dispatch(new InitFetchCities(data));
   }
 
