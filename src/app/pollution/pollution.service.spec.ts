@@ -1,6 +1,7 @@
 import { HttpParams, HttpRequest } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { NgxsStoreModule } from '@appstore/store.module';
 import { SearchParams } from './pollution';
 import { PollutionService } from './pollution.service';
 import { POLAND_PM25_50_RECORDS, WIKIPEDIA_PAGES } from './pollution.service.mockdata';
@@ -12,7 +13,7 @@ describe('PollutionService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, NgxsStoreModule],
       providers: [PollutionService]
     });
     service = TestBed.get(PollutionService);

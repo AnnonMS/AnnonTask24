@@ -1,6 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgxsStoreModule } from '@appstore/store.module';
 import { MessengerContainerComponent } from './messenger-container.component';
+
 
 describe('MessengerContainerComponent', () => {
   let component: MessengerContainerComponent;
@@ -8,9 +10,10 @@ describe('MessengerContainerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MessengerContainerComponent ]
+      declarations: [MessengerContainerComponent],
+      imports: [NgxsStoreModule, HttpClientTestingModule]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

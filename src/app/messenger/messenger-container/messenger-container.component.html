@@ -1,7 +1,7 @@
 <div class="messenger">
   <div class="container">
-    <div class="messages" *ngIf="this.messageSrv.messages.length">
-      <div class="message" *ngFor="let message of messageSrv.messages; let i = index">
+    <div class="messages" *ngIf="messages$ | async as messages">
+      <div class="message" *ngFor="let message of messages; let i = index">
         <p [ngClass]="'message--' + message.type">{{ message.desc }}</p>
       </div>
     </div>

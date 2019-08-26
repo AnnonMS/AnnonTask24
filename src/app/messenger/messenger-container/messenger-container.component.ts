@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { MessengerService } from '../messenger.service';
+import { MessengerState } from '@appstore/messenger/messenger.state';
+import { Select, Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-messenger-container',
@@ -8,7 +10,10 @@ import { MessengerService } from '../messenger.service';
 })
 export class MessengerContainerComponent implements OnInit {
 
-  constructor(public messageSrv: MessengerService) { }
+
+  @Select(MessengerState.getMessages) public messages$: Observable<string[]>;
+
+  constructor(private store: Store) { }
 
   ngOnInit() {
   }

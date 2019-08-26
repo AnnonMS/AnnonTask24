@@ -1,9 +1,10 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { AddMessage } from '@appstore/messenger/messenger.actions';
+import { HideLoader } from '@appstore/pollution/pollution.actions';
+import { Store } from '@ngxs/store';
 import { map } from 'rxjs/operators';
-import { MessageType } from './../messenger/message';
-import { MessengerService } from './../messenger/messenger.service';
+import { MessageType } from '../messenger/message';
 import { City, CityDescWikiResponse, Measurements, Result, SearchParams } from './pollution';
 
 @Injectable({
@@ -11,7 +12,7 @@ import { City, CityDescWikiResponse, Measurements, Result, SearchParams } from '
 })
 export class PollutionService {
 
-  constructor(private http: HttpClient, private messageSrv: MessengerService) { }
+  constructor(private http: HttpClient, private store: Store) { }
 
 
   /*
@@ -30,12 +31,6 @@ export class PollutionService {
 
     while ((items.length < 10) || (page > 20)) {
       if (items[items.length - 1] === `No more measurements from last 24 hours for ${search.param}`) {
-        this.messageSrv.addMessage({
-          desc: 'No more measurements',
-          type: MessageType.info
-        });
-        // return only items with cities;
-        items.pop();
         break;
       } else {
         const data = await this.getCitiesFromPage(search.country, search.param, page, lasthours, items);
@@ -88,7 +83,7 @@ export class PollutionService {
         }
         return uniqueCities;
       }),
-    ).toPromise();
+    ).toPromise().catch((error) => this.handleError(error));
   }
 
 
@@ -110,7 +105,7 @@ export class PollutionService {
       cities = [...cities, promise];
     }
 
-    const allCities = await Promise.all(cities);
+    const allCities = await Promise.all(cities).catch((error) => this.handleError(error));
 
 
     return allCities;
@@ -148,17 +143,22 @@ export class PollutionService {
 
         return city;
       })
-    ).toPromise();
+    ).toPromise().catch((error) => this.handleError(error));
   }
 
 
 
 
-  private handleError<T>(message: string, result?: T) {
-    return (error: any): Observable<T> => {
-      console.error(`error ${error.message}`);
-      return of(result as T);
-    };
+  private handleError(error: Error): Promise<any> {
+
+    this.store.dispatch(new AddMessage({
+      type: MessageType.error,
+      desc: error.message
+    }));
+
+    this.store.dispatch(new HideLoader());
+
+    return Promise.reject(error.message || error);
   }
 
 }

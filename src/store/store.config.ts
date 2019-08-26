@@ -1,9 +1,10 @@
 import { NgxsDevtoolsOptions } from '@ngxs/devtools-plugin/src/symbols';
 import { NgxsLoggerPluginOptions } from '@ngxs/logger-plugin/src/symbols';
 import { NgxsConfig } from '@ngxs/store/src/symbols';
+import { MessengerState } from './messenger/messenger.state';
 import { PollutionState } from './pollution/pollution.state';
 
-export const STATES_MODULES = [PollutionState];
+export const STATES_MODULES = [PollutionState, MessengerState];
 
 export const OPTIONS_CONFIG: Partial<NgxsConfig> = {
   /**

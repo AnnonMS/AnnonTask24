@@ -86,6 +86,8 @@ describe('Pollution store', () => {
       store.dispatch(new FetchCities(searchmock)).toPromise().then(() => {
         const actual = store.selectSnapshot(PollutionState.getState).citynames;
         expect(actual.length).toEqual(10);
+
+        // TODO: Write better tests
       });
 
       const req = httpMock.expectOne(request => request.url === 'https://api.openaq.org/v1/measurements'); req.flush(POLAND_PM25_50_RECORDS);
@@ -99,6 +101,8 @@ describe('Pollution store', () => {
         const actual = store.selectSnapshot(PollutionState.getState).cities;
         expect(actual.length).toEqual(10);
         expect(actual[0].extract).toBeDefined();
+
+        // TODO: Write better tests
       });
 
       const api = 'https://en.wikipedia.org/w/api.php';

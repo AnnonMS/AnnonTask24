@@ -20,6 +20,11 @@ export class MessengerState {
     return state;
   }
 
+  @Selector()
+  public static getMessages(state: MessengerStateModel) {
+    return state.messages;
+  }
+
   @Action(AddMessage)
   public add(ctx: StateContext<MessengerStateModel>, { payload }: AddMessage) {
     ctx.setState(produce(ctx.getState(), draft => { draft.messages = [...draft.messages, payload]; }));
