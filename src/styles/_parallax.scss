@@ -12,9 +12,6 @@ body {
 }
 
 .magic-fixed-pixel {
-  /* Without this fixed position element, Edge does not correctly update the
-     parallax position until it is forced to repaint. */
-
   position: fixed;
   top: 0;
   width: 1px;
@@ -37,30 +34,7 @@ body {
   }
 }
 
-.parallax-container {
-  transform-style: preserve-3d;
-  position: relative;
-  z-index: -1;
-
-  .sticky-parallax & {
-    transform-style: unset;
-  }
-}
-
-.sticky-parallax {
-
-  .parallax-container {
-    perspective: 1px;
-    perspective-origin: 0% 0%;
-  }
-
-  .hero {
-    position: -webkit-sticky;
-    top: 0;
-  }
-}
-
-.hero {
+.parallax {
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -71,6 +45,18 @@ body {
   transform-origin: 0% 0% 0px;
   height: 100vh;
   margin-bottom: -100vh;
+  padding: 5rem 0 5rem;
+
+  &__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-position: center 70%;
+    object-fit: cover;
+    z-index: -1;
+  }
 
   @include breakpoint($md) {
     height: 60rem;
@@ -78,6 +64,22 @@ body {
   }
 }
 
-.fake-height {
-  background-color: #fff;
+.parallax-container {
+  transform-style: preserve-3d;
+  position: relative;
+  z-index: -1;
+}
+
+.sticky-parallax {
+
+  .parallax-container {
+    perspective: 1px;
+    perspective-origin: 0% 0%;
+    transform-style: unset;
+  }
+
+  .hero {
+    position: -webkit-sticky;
+    top: 0;
+  }
 }

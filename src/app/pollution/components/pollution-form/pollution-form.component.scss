@@ -2,7 +2,7 @@
   flex-grow: 1;
   margin: 0;
 
-  &-button {
+  &__button {
     width: 5rem;
     height: 5rem;
     display: flex;
@@ -15,7 +15,7 @@
     border: 1px solid #ccc;
   }
 
-  &-group {
+  &__group {
     margin-top: 1rem;
     display: flex;
     margin-bottom: 2rem;
@@ -47,52 +47,4 @@
   @media screen and(min-width: 1024px) {
     padding-right: 4rem;
   }
-}
-
-[type='radio'] {
-  display: none;
-}
-
-[type='radio']:checked + label,
-[type='radio']:not(:checked) + label {
-  position: relative;
-  padding-left: 4rem;
-  cursor: pointer;
-  line-height: 3rem;
-  display: block;
-  margin: 1rem 0;
-}
-
-[type='radio']:checked + label:before,
-[type='radio']:not(:checked) + label:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 3rem;
-  height: 3rem;
-  border: 1px solid #ccc;
-  border-radius: 50%;
-  background: #fff;
-}
-
-[type='radio']:checked + label:after,
-[type='radio']:not(:checked) + label:after {
-  content: '';
-  width: 1.4rem;
-  height: 1.4rem;
-  background-color: #000;
-  position: absolute;
-  top: 0.8rem;
-  left: 0.8rem;
-  border-radius: 50%;
-  transition: opacity 0.2s ease;
-}
-
-[type='radio']:not(:checked) + label:after {
-  opacity: 0;
-}
-
-[type='radio']:checked + label:after {
-  opacity: 1;
 }
