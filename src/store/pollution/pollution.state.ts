@@ -7,6 +7,7 @@ export interface PollutionStateModel {
   lastSearch: SearchParams;
   countries: Country[];
   cities: City[];
+  citynames: string[];
   parameters: Parameter[];
   fetchingData: boolean;
 }
@@ -29,6 +30,7 @@ export interface PollutionStateModel {
       { name: 'pm10', value: 'pm10' },
       { name: 'Ozone', value: 'o3' }
     ],
+    citynames: [],
     cities: [],
     fetchingData: false
   }
@@ -104,17 +106,15 @@ export class PollutionState implements NgxsOnInit {
 
     ctx.dispatch(new ShowLoader());
     ctx.dispatch(new SaveToStorage(payload));
-
     const countries = ctx.getState().countries;
     const iso = countries.filter((country) => country.name.toLowerCase() === payload.country.toLowerCase())[0].iso; // find iso code
-
-    console.dir(payload);
     ctx.dispatch(new FetchCities({ country: iso, param: payload.param }));
   }
 
   @Action(FetchCities)
   public async fetchCities(ctx: StateContext<PollutionStateModel>, { payload }: FetchCities) {
     const cityNames = await this.pollutionSrv.getCities(payload);
+    ctx.setState(produce(ctx.getState(), (draft: PollutionStateModel) => { draft.citynames = cityNames; }));
     ctx.dispatch(new FetchCitiesDescription(cityNames));
   }
 

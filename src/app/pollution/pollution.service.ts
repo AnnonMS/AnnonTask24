@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MessageType } from './../messenger/message';
 import { MessengerService } from './../messenger/messenger.service';
 import { City, CityDescWikiResponse, Measurements, Result, SearchParams } from './pollution';
 
@@ -15,21 +16,33 @@ export class PollutionService {
 
   /*
     @param iso: required - to call openaq API and get cities we need ISO Code of the country
+    @param search: required including iso country code and selected parameter (pm25, pm10 ,o3) to fetch data;
   */
 
   async getCities(search: SearchParams): Promise<string[]> {
     let items: string[] = [];
     let page = 1;
-
-    const lasthours = new Date(Date.now() - (3600 * 24 * 1000)).toUTCString();
+    // 3600000 - 1 hours in millisecond * 24 hours;
+    const lasthours = new Date(Date.now() - (3600000 * 24)).toUTCString();
 
     // call Api till we have atleast 10 unique cities, wait for Promise to count array length
+    // to prevent infity loop, stop requesting api after 20 pages, and return uncomplited list of cities
 
-    while (items.length < 10) {
-      const data = await this.getCitiesFromPage(search.country, search.param, page, lasthours, items);
-      items = [...items, ...data];
-      page++;
-    };
+    while ((items.length < 10) || (page > 20)) {
+      if (items[items.length - 1] === `No more measurements from last 24 hours for ${search.param}`) {
+        this.messageSrv.addMessage({
+          desc: 'No more measurements',
+          type: MessageType.info
+        });
+        // return only items with cities;
+        items.pop();
+        break;
+      } else {
+        const data = await this.getCitiesFromPage(search.country, search.param, page, lasthours, items);
+        items = [...items, ...data];
+        page++;
+      }
+    }
 
     // in case we get more cities from the last request to api, return only first 10
 
@@ -61,11 +74,18 @@ export class PollutionService {
 
     return this.http.get<Measurements>(api, { params }).pipe(
       map((res: Measurements) => {
-        const uniqueCities: string[] = res.results
-          .map((result: Result) => this.fixCityname(result.city)) // return only city names from array and pass it throught city names fix function
-          .filter((city, index, cities) => cities.indexOf(city) === index) // return only unique values from current Api request
-          .filter((ucity) => currentCities.indexOf(ucity) === -1); // return only unique values from all Api request
 
+        const results = res.results;
+        let uniqueCities: string[];
+
+        if (results.length) {
+          uniqueCities = res.results
+            .map((result: Result) => this.fixCityname(result.city)) // return only city names from array and pass it throught city names fix function
+            .filter((city, index, cities) => cities.indexOf(city) === index) // return only unique values from current Api request
+            .filter((ucity) => currentCities.indexOf(ucity) === -1); // return only unique values from all Api request
+        } else {
+          uniqueCities = [...currentCities, `No more measurements from last 24 hours for ${param}`];
+        }
         return uniqueCities;
       }),
     ).toPromise();
