@@ -24,7 +24,7 @@ export class PollutionService {
     let items: string[] = [];
     let page = 1;
     // 3600000 - 1 hours in millisecond * 24 hours;
-    const lasthours = new Date(Date.now() - (3600000 * 24)).toUTCString();
+    const lasthours = new Date(Date.now() - (3600000 * 24)).toISOString();
 
     // call Api till we have atleast 10 unique cities, wait for Promise to count array length
     // to prevent infity loop, stop requesting api after 20 pages, and return uncomplited list of cities
@@ -88,25 +88,15 @@ export class PollutionService {
 
 
   fixCityname(name: string) {
-    name.toLowerCase();
-    // get only 1 city name from api res in case format' Valencia/València' apear;
-    name = name.includes('/', 0) ? name.substr(0, name.indexOf('/')) : name;
-
-    return name;
+    const fixedname = name.toLowerCase();
+    return fixedname.includes('/', 0) ? fixedname.substr(0, fixedname.indexOf('/')) : fixedname;
   }
 
 
   async getCityDescriptions(data: string[]): Promise<City[]> {
 
-    let cities: Promise<City>[] = [];
-
-    for (const name of data) {
-      const promise = this.getCityDescription(name);
-      cities = [...cities, promise];
-    }
-
+    const cities: Promise<City>[] = data.map((city) => this.getCityDescription(city));
     const allCities = await Promise.all(cities).catch((error) => this.handleError(error));
-
 
     return allCities;
   }
